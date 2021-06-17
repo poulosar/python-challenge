@@ -4,70 +4,85 @@ from typing import Counter
 
 csvpath = os.path.join('Resources', 'budget_data.csv')
 
-#Function that uses budget_data.csv to get total number of months in csv, this should work on any number of entries
-def total_months():
-    months = []
-    with open(csvpath) as csvfile:
-    #set delimiter as ,
-        csvreader = csv.reader(csvfile, delimiter=',')
-
-        #skip headers
-        next(csvreader, None)
-
-        num_rows = 0
-        #Counts each row until none left and then prints output of counter as total months
-        for row in csvreader:
-            num_rows += 1
-        months.append(num_rows)
-        return(int(num_rows))
-#Prints the above function with the string "Total Months"
-print("Total Months: " + str(total_months()))
-
-#Uses budget_data.csv to add all month totals and print it out
-def total_net_change():
-    net_change = []
-    with open(csvpath) as csvfile:
-        #set delimiter as ,
-        csvreader = csv.reader(csvfile, delimiter=',')
-    
-        #skip headers
-        next(csvreader, None)
-        #Appends net_change with "Profit/Loses" column data
-        for row in csvreader:
-            net_change.append(int(row[1]))
-        #Returns a value of the sum of all values in "Profit/Loses"
-        return(int(sum(net_change)))
-#This runs the definition above to print out results
-print(f'Total: ${int(total_net_change())} ')
-#
-#
-#Uses budget_data.csv to get average of changes over time
-change_over_time = []
+# Function that uses budget_data.csv to get total number of months in csv, this should work on any number of entries
+months = []
 with open(csvpath) as csvfile:
-    #set delimiter as ,
+    # set delimiter as ,
     csvreader = csv.reader(csvfile, delimiter=',')
 
-    #skip headers
+    # skip headers
     next(csvreader, None)
-    #Start at the second entry to get difference and avoid errors
+
+    num_rows = 0
+    # Counts each row until none left and then prints output of counter as total months
+    for row in csvreader:
+        num_rows += 1
+    months.append(num_rows)
+
+# Prints the above function with the string "Total Months"
+
+# Uses budget_data.csv to add all month totals and print it out
+
+total_change = []
+with open(csvpath) as csvfile:
+    # set delimiter as ,
+    csvreader = csv.reader(csvfile, delimiter=',')
+
+    # skip headers
+    next(csvreader, None)
+    # Appends net_change with "Profit/Loses" column data
+    for row in csvreader:
+        total_change.append(int(row[1]))
+    # Returns a value of the sum of all values in "Profit/Loses"
+    
+# This runs the definition above to print out results
+
+# Uses budget_data.csv to get average of changes over time
+change_over_time = []
+with open(csvpath) as csvfile:
+    # set delimiter as ,
+    csvreader = csv.reader(csvfile, delimiter=',')
+
+    # skip headers
+    next(csvreader, None)
+    # variables for counting, last total profit/loss, and current profit/loss
     count = 0
-    last_value = 0
-    current_value = 0
-    #List to keep track of each difference to add and average later
-    difference = []
-     #Counter to find row were on for adding and average
-    if count != int(total_months()- 1):
+    last_revenue = 0
+    current_revenue = 0
+    # List to keep track of each difference to add and average later
+    difference_list = []
+    full_list = []
+    # Counter to find row we're on for adding and average
+    if count != int(int(num_rows) - 1):
         for row in csvreader:
             change_over_time.append(int(row[1]))
-            last_value = change_over_time[count-1]
-            current_value = change_over_time[count]
-            difference.append(current_value-last_value)
-            # print(difference)
-            # print("------------------------------------------------------")
-            # print(change_over_time)
-            # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            full_list.append(row[0])
+            last_revenue = change_over_time[count-1]
+            current_revenue = change_over_time[count]
+            difference_list.append(current_revenue-last_revenue)
             count = count + 1
-    difference.pop(0)
-    print(round(sum(difference)/len(difference),2))
-    # print(change_over_time[count-1])
-   
+    #sets max_value equal to max profit from the difference list
+    max_value = max(difference_list)
+    min_value = min(difference_list)
+    #gets max value and converts to index, this will be used to pull date of this profit
+    max_value_index = difference_list.index(max_value)
+    min_value_index = difference_list.index(min_value)
+    # This will remove the first entry, this will be 0 and skews results without it
+    difference_list.pop(0)
+    # Prints the average change from function defined above
+    print(f'Total Months: {int(num_rows)}')
+    print(f'Total: ${int(sum(total_change))}')
+    print(f'Average Change: ${round(sum(difference_list)/len(difference_list), 2)}')
+    print(f'Greatest increase in profits: {full_list[int(max_value_index)]}  (${max_value})')
+    print(f'Greatest increase in profits: {full_list[int(min_value_index)]}  (${min_value})')
+  
+
+# with open(csvpath) as csvfile:
+#     count = 0
+#     last_value = 0
+#     current_value = 0
+#     # set delimiter as ,
+#     csvreader = csv.reader(csvfile, delimiter=',')
+#     # skip headers
+#     next(csvreader, None)
+
