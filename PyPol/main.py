@@ -1,30 +1,33 @@
+#import packages
 import csv
 import os
-
-csvpath = os.path.join('Resources', 'election_data.csv')
-
+#define paths for input and output files
+input_csvpath = os.path.join('Resources', 'election_data.csv')
+output_txt = os.path.join('Analysis', 'data_analysis.txt')
+#creating lists for values on calculation
 vote_id = []
 candidate = []
-county = []
 unique_candidate = []
 percent = []
-
+#Print Statements
 print("\n")
 print("Election Results")
 print("\n---------------------------\n")
 
-with open(csvpath) as csvfile:
+#Opens excel file
+with open(input_csvpath) as csvfile:
 
     # CSV reader specifies delimiter and variable that holds contents
     csvreader = csv.reader(csvfile, delimiter=',')
-  # --- store header rows into a Headers list ---
+    #store header rows into a Headers list
     Headers = next(csvreader)
+    #set to 0 for counting
     total_votes = 0
     # creates unique lists
     for row in csvreader:
         total_votes += 1
         
-        #if statement to add candidate name to unique list if not there
+        #Determines candidate uniqueness and adds name to list
         if row[2] not in unique_candidate:
             unique_candidate.append(row[2])
             vote_id.append(1)
@@ -33,7 +36,7 @@ with open(csvpath) as csvfile:
             vote_id[candidate_index] += 1
     print(f'Total Votes: {total_votes}')
     print("---------------------------")
-    
+    #prints each candidate name, % of votes, and total votes
     for row in range(len(vote_id)):
         percent.append(vote_id[row] / total_votes)
         percentage = round(100*(percent[row]))
@@ -41,9 +44,17 @@ with open(csvpath) as csvfile:
     print(f'---------------------------------------')
     print(f'Winner: {unique_candidate[0]}!!!')
 
+#Prints output of the above code
+with open(output_txt, 'w') as output:
+    output.write(f"Election Results\n"
+                   f"----------------------------\n"
+                   f"Total Votes: {total_votes}\n"
+                   f"----------------------------\n"
+                   )
+    for i in range(len(unique_candidate)):
+        output.write(f"{unique_candidate[i]}: {percentage:.3f} ({vote_id[i]})\n")
 
-
-
-
-# Print Statements
-
+    output.write(f"----------------------------\n"
+                   f"Winner: {unique_candidate[0]}\n"
+                   f"----------------------------\n"
+                  )    

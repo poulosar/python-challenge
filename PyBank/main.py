@@ -4,8 +4,9 @@ from typing import Counter
 
 csvpath = os.path.join('Resources', 'budget_data.csv')
 
-# Function that uses budget_data.csv to get total number of months in csv, this should work on any number of entries
 months = []
+total_change = []
+
 with open(csvpath) as csvfile:
     # set delimiter as ,
     csvreader = csv.reader(csvfile, delimiter=',')
@@ -20,7 +21,6 @@ with open(csvpath) as csvfile:
     months.append(num_rows)
 
 # Uses budget_data.csv to add all month totals and print it out
-total_change = []
 with open(csvpath) as csvfile:
     # set delimiter as ,
     csvreader = csv.reader(csvfile, delimiter=',')
