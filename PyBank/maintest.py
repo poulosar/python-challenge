@@ -19,7 +19,10 @@ with open(csvpath) as csvfile:
         num_rows += 1
     months.append(num_rows)
 
+# Prints the above function with the string "Total Months"
+
 # Uses budget_data.csv to add all month totals and print it out
+
 total_change = []
 with open(csvpath) as csvfile:
     # set delimiter as ,
@@ -31,6 +34,8 @@ with open(csvpath) as csvfile:
     for row in csvreader:
         total_change.append(int(row[1]))
     # Returns a value of the sum of all values in "Profit/Loses"
+    
+# This runs the definition above to print out results
 
 # Uses budget_data.csv to get average of changes over time
 change_over_time = []
@@ -57,12 +62,12 @@ with open(csvpath) as csvfile:
             difference_list.append(current_revenue-last_revenue)
             count = count + 1
     #sets max_value equal to max profit from the difference list
-    #gets max value and converts to index, this will be used to pull date of this profit
     max_value = max(difference_list)
     min_value = min(difference_list)
+    #gets max value and converts to index, this will be used to pull date of this profit
     max_value_index = difference_list.index(max_value)
     min_value_index = difference_list.index(min_value)
-    # This will remove the first entry, this will be 0 and skews results without it, needs to happen after indexing too
+    # This will remove the first entry, this will be 0 and skews results without it
     difference_list.pop(0)
     # Prints the average change from function defined above
     print(f'Total Months: {int(num_rows)}')
@@ -71,3 +76,13 @@ with open(csvpath) as csvfile:
     print(f'Greatest increase in profits: {full_list[int(max_value_index)]}  (${max_value})')
     print(f'Greatest increase in profits: {full_list[int(min_value_index)]}  (${min_value})')
   
+
+# with open(csvpath) as csvfile:
+#     count = 0
+#     last_value = 0
+#     current_value = 0
+#     # set delimiter as ,
+#     csvreader = csv.reader(csvfile, delimiter=',')
+#     # skip headers
+#     next(csvreader, None)
+
